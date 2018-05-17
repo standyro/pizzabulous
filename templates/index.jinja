@@ -1,0 +1,19 @@
+<h1>Pizzabulous</h1>
+<p>Scraping the cheese off NYC Pizza since 2018</p>
+
+<br/>
+
+<p>How many pizza results do you want?</p>
+<input value=10></input>
+
+<h2>Results</h2>
+<ul>
+{% for review in reviews %}
+    <li style='width:400px;'>
+    <div style='width:150px;'>
+      {% for num in range(review['rating']) %}<span style='margin:0;'>🍕</span>{% endfor %}
+    </div>
+    <div>{{ review['name'] }}</div>
+    </li>
+{% endfor %}
+</ul>
