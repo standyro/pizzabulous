@@ -9,7 +9,7 @@ A primitive version of a pizza review aggregator.
 ```bash
 docker run -d -p 5000:5000 standyro/pizzabulous:latest
 curl http://localhost:5000
-curl http://localhost:5000?reviews=10
+curl http://localhost:5000?reviews=5
 curl http://localhost:5000/api
 ```
 
@@ -38,7 +38,7 @@ zappa deploy
 
 ## Code Considerations
 
-- Optimized for speed of development and laid out requirements (Flask, BeautifulSoup)
+- Optimized for speed of development (<2 hr timebox) and laid out requirements (Flask, BeautifulSoup)
 - Available via HTML and JSON
 - Only some basic unit tests, no acceptance or integration tests
 - Yelp API calls not cached, so slow performance as reviews results increase, would use a shared cache in production
