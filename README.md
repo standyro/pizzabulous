@@ -6,7 +6,11 @@ A primitive version of a pizza review aggregator.
 
 ### Using Docker
 
-`docker run -p 5000:5000 standyro/pizzabulous:latest`
+```bash
+docker run -p 5000:5000 standyro/pizzabulous:latest
+curl http://localhost:5000
+curl http://localhost:5000/api
+```
 
 ### Mac OS X
 
@@ -37,7 +41,7 @@ zappa deploy
 - Only some basic unit tests, no acceptance or integration tests
 - Yelp API calls not cached, so slow performance as reviews results increase
 - Available via HTML and JSON
-- Deployed using Zappa to AWS Lambda for cheap (https://github.com/Miserlou/Zappa)
+- Deployed using Zappa to AWS Lambda
 
 ## Requirements
 
