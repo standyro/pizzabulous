@@ -23,7 +23,8 @@ def api():
 
 def scrape_yelp(num_of_reviews):
     if num_of_reviews < 10:
-        total_reviews = get_reviews(num_of_reviews)
+        total_reviews = get_reviews(num_of_reviews)[0:num_of_reviews]
+        # yelp only returns 10 reviews, so discard the rest
     else:
         total = list(range(0, num_of_reviews, 10))
         reviews = [get_reviews(number) for number in total]
@@ -34,7 +35,7 @@ def scrape_yelp(num_of_reviews):
 def process_single_result(result):
     if str(result) is not None:
         result_parsed = BeautifulSoup(str(result), 'html.parser')
-        p = re.compile('(\d+\.\d+) star rating') # strip
+        p = re.compile('(\d+\.\d+) star rating') # strip from text
         rating_text = result_parsed.find('div', {'class': 'i-stars'})['title']
         rating = p.match(rating_text)
         rating_float = float(rating.group(1))
