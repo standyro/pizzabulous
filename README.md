@@ -11,19 +11,25 @@ A primitive version of a pizza review aggregator.
 ### Mac OS X
 
 - Python 3.6 (Using virtualenv)
-`virtualenv .`
-`source ./bin/activate`
-`pip install -r requirements.txt`
-`python3 pizzabulous.py`
+```bash
+virtualenv .
+source ./bin/activate
+pip install -r requirements.txt
+python3 pizzabulous.py
+```
 
 ## Testing
 
-`docker run standyro/pizzabulous:latest python3 test_pizzabulous.py`
+```bash
+docker run standyro/pizzabulous:latest python3 test_pizzabulous.py
+```
 
 ## Deployment
 
-`sudo pip3 install zappa`
-`zappa deploy`
+```bash
+pip3 install zappa
+zappa deploy
+```
 
 ## Code Considerations
 
