@@ -1,6 +1,7 @@
 # Pizzabulous
 
 A primitive version of a pizza review aggregator.
+![Pizzabulous](pizzabulous.png)
 
 ## Setup
 
