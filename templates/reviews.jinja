@@ -1,0 +1,22 @@
+<style>
+p {
+  display: block;
+}
+</style>
+<h1>Pizzabulous</h1>
+<p>Scraping the cheese off NYC Pizza since 2018</p>
+
+<br/>
+
+<a href="/">Back to Restaurant Listings</a>
+
+<ul>
+{% for review in reviews %}
+<li>
+{% for num in range(review['reviewRating']['ratingValue']) %}<span style='margin:0;'>🍕</span>{% endfor %}
+<p class="author">{{ review['author'] }}</p>
+<p class="datePublished">{{ review['datePublished'] }}</p>
+<p class="description">{{ review['description'] }}</p>
+</li>
+{% endfor %}
+</ul>

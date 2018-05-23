@@ -3,12 +3,20 @@
 
 <br/>
 
+<h2>Search By Name</h2>
+
+<form action="/search" method="get">
+  Search: <input type="text" name="reviews">
+  <input type="submit" value="Search">
+</form>
+
+<h2>Top Pizza Restaurants in NYC</h2>
+
 <form action="/" method="get">
   How many pizza results do you want?: <input type="text" name="reviews" value="{{ num_of_reviews }}">
   <input type="submit" value="Submit">
 </form>
 
-<h2>Results</h2>
 <ul>
 {% for review in reviews %}
     <li style='width:400px;'>
@@ -17,7 +25,7 @@
         {% for num in range(review['rating']) %}<span style='margin:0;'>🍕</span>{% endfor %}
       {% endif %}
     </div>
-    <div>{{ review['name'] }}</div>
+    <div><a href="/reviews?name={{ review['href'] }}">{{ review['name'] }}</a></div>
     </li>
 {% endfor %}
 </ul>

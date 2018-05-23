@@ -1,8 +1,10 @@
 from bs4 import BeautifulSoup
 import requests
 from flask import Flask, render_template, request, jsonify
+from urllib.parse import quote_plus, unquote
 import re
 import itertools
+import json
 
 app = Flask(__name__)
 
@@ -14,6 +16,13 @@ def root():
     return render_template('index.jinja',
                            num_of_reviews=num_of_reviews,
                            reviews=reviews)
+@app.route('/reviews')
+def reviews():
+    name = request.args.get('name')
+    reviews = scrape_yelp_single_restaurant_reviews(name)
+    return render_template('reviews.jinja',
+                           reviews=reviews)
+
 @app.route('/api')
 def api():
     num_of_reviews = int(request.args.get('reviews', 10))
@@ -31,6 +40,12 @@ def scrape_yelp(num_of_reviews):
         total_reviews = list(itertools.chain(*reviews))
     return total_reviews
 
+def scrape_yelp_single_restaurant_reviews(restaurant_name):
+    html = requests.get('https://www.yelp.com/' + unquote(restaurant_name))
+    soup = BeautifulSoup(html.text, 'html.parser')
+    results = soup.find_all('script', {'type': 'application/ld+json'})[0].contents[0]
+    results_json = json.loads(results)
+    return results_json.get('review')
 
 def process_single_result(result):
     if str(result) is not None:
@@ -40,11 +55,15 @@ def process_single_result(result):
         rating = p.match(rating_text)
         rating_float = float(rating.group(1))
         business_html = result_parsed.find('a', {'class': 'biz-name'})
+        href = result_parsed.find('a').attrs.get('href')
         name = business_html.find('span').contents[0]
-        return {
+        result_dict = {
             'name': name,
-            'rating': int(rating_float)
+            'rating': int(rating_float),
+            'href': quote_plus(href)
         }
+        print(result_dict)
+        return result_dict
 
 def get_reviews(offset):
     html = requests.get('https://www.yelp.com/search?find_desc=Pizza&find_loc=New+York,+NY&start=' + str(offset))
