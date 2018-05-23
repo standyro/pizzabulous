@@ -2,7 +2,7 @@
 
 A primitive version of a pizza review aggregator.
 
-![Pizzabulous](image.png)
+![Pizzabulous](readme_image.png)
 
 ## Setup
 
