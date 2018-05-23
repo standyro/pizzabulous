@@ -19,8 +19,24 @@ def root():
 @app.route('/reviews')
 def reviews():
     name = request.args.get('name')
-    reviews = scrape_yelp_single_restaurant_reviews(name)
+    reviews_json = scrape_yelp_single_restaurant_reviews(name)
+    print(reviews_json)
+    reviews = reviews_json.get('review')
+    name = reviews_json.get('name')
     return render_template('reviews.jinja',
+                           name=name,
+                           reviews=reviews)
+
+@app.route('/search')
+def search():
+    name = request.args.get('name')
+    total_reviews = get_reviews(0, name)
+    reviews_json = scrape_yelp_single_restaurant_reviews(total_reviews[0]['href'])
+    print(reviews_json)
+    reviews = reviews_json.get('review')
+    name = reviews_json.get('name')
+    return render_template('reviews.jinja',
+                           name=name,
                            reviews=reviews)
 
 @app.route('/api')
@@ -45,7 +61,7 @@ def scrape_yelp_single_restaurant_reviews(restaurant_name):
     soup = BeautifulSoup(html.text, 'html.parser')
     results = soup.find_all('script', {'type': 'application/ld+json'})[0].contents[0]
     results_json = json.loads(results)
-    return results_json.get('review')
+    return results_json
 
 def process_single_result(result):
     if str(result) is not None:
@@ -65,8 +81,11 @@ def process_single_result(result):
         print(result_dict)
         return result_dict
 
-def get_reviews(offset):
-    html = requests.get('https://www.yelp.com/search?find_desc=Pizza&find_loc=New+York,+NY&start=' + str(offset))
+
+def get_reviews(offset, query=''):
+    url = 'https://www.yelp.com/search?find_desc=' + query + '+pizza&find_loc=New+York,+NY&start=' + str(offset)
+    print(url)
+    html = requests.get(url)
     soup = BeautifulSoup(html.text, 'html.parser')
     results = soup.find_all('li', {'class': 'regular-search-result'})
     yelp_reviews = [process_single_result(result) for result in results]
