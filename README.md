@@ -43,7 +43,7 @@ zappa deploy
 - Optimized for speed of development (<2 hr timebox) and laid out requirements (Flask, BeautifulSoup)
 - Available via HTML and JSON
 - Only some basic unit tests, no acceptance or integration tests
-- Yelp API calls not cached, so slow performance as reviews results increase, would use a shared cache in production
+- Yelp API calls not cached, so slow performance as reviews results increase, would use a shared cache in production, would have been more sane if this were a production service to write a separate service to scrape and store Yelp data, rather than requesting it on demand
 - Rounded review integers up
 - Deployed using Zappa to AWS Lambda
 
