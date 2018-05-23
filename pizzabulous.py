@@ -38,10 +38,11 @@ def reviews():
 @app.route('/search')
 def search():
     name = request.args.get('name')
+    num_of_reviews = int(request.args.get('reviews', 10))
     total_reviews = get_reviews(0, name)
     reviews_json = scrape_yelp_single_restaurant_reviews(total_reviews[0]['href'])
     log.debug(reviews_json)
-    reviews = reviews_json.get('review')
+    reviews = reviews_json.get('review')[0:num_of_reviews]
     ratings = [review['reviewRating']['ratingValue'] for review in reviews]
     score = mean(ratings)
     name = reviews_json.get('name')
