@@ -5,6 +5,10 @@ from urllib.parse import quote_plus, unquote
 import re
 import itertools
 import json
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+log = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
@@ -20,7 +24,7 @@ def root():
 def reviews():
     name = request.args.get('name')
     reviews_json = scrape_yelp_single_restaurant_reviews(name)
-    print(reviews_json)
+    log.debug(reviews_json)
     reviews = reviews_json.get('review')
     name = reviews_json.get('name')
     return render_template('reviews.jinja',
@@ -32,7 +36,7 @@ def search():
     name = request.args.get('name')
     total_reviews = get_reviews(0, name)
     reviews_json = scrape_yelp_single_restaurant_reviews(total_reviews[0]['href'])
-    print(reviews_json)
+    log.debug(reviews_json)
     reviews = reviews_json.get('review')
     name = reviews_json.get('name')
     return render_template('reviews.jinja',
@@ -78,13 +82,13 @@ def process_single_result(result):
             'rating': int(rating_float),
             'href': quote_plus(href)
         }
-        print(result_dict)
+        log.debug(result_dict)
         return result_dict
 
 
 def get_reviews(offset, query=''):
     url = 'https://www.yelp.com/search?find_desc=' + query + '+pizza&find_loc=New+York,+NY&start=' + str(offset)
-    print(url)
+    log.debug(url)
     html = requests.get(url)
     soup = BeautifulSoup(html.text, 'html.parser')
     results = soup.find_all('li', {'class': 'regular-search-result'})
