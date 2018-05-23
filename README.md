@@ -11,6 +11,7 @@ A primitive version of a pizza review aggregator.
 ```bash
 docker run -d -p 5000:5000 standyro/pizzabulous:latest
 curl http://localhost:5000
+curl http://localhost:5000/search?name=Grimaldis
 curl http://localhost:5000?reviews=5
 curl http://localhost:5000/api
 ```
